@@ -1,0 +1,47 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Property {
+  id           String    @id @default(cuid())
+  title        String
+  location     String
+  price        Int
+  area         Int
+  status       String        // "For Sale" | "For Rent"
+  propertyType String        // "flat" | "villa" | "plot"
+  bhk          Int           // 0 for plot, 1–4+ for others
+  city         String    @default("pune")
+  images       Json          // <-- store array as JSON
+  description  String
+  amenities    Json          // <-- store array as JSON
+  mapLocation  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
